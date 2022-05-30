@@ -20,7 +20,7 @@ export default function Search() {
           type="text"
           value={term}
           onChange={(e) => setTerm(e.target.value)}
-          placeHolder="Search Events"
+          placeholder="Search Events"
         />
       </form>
     </div>
