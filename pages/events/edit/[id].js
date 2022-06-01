@@ -8,6 +8,8 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import Image from "next/image";
 import Modal from "@/components/Modal";
+import ImageUpload from "@/components/ImageUpload";
+
 import { API_URL } from "@/config/index";
 import styles from "@/styles/Form.module.css";
 
@@ -29,6 +31,17 @@ export default function EditEventPage({ evt }) {
   const [showModal, setShowModal] = useState(false);
 
   const router = useRouter();
+
+  const imageUploaded = async (e) => {
+    //get latest image and set preview to that
+    //so, once uploaded, we want this function to be called and then
+    //we make another request to get the event so we can get latest image
+    const res = await fetch(`${API_URL}/events/${evt.id}`);
+    const data = await res.json();
+    console.log(data);
+    setImagePreview(data.image.formats.thumbnail.url);
+    setShowModal(false);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -171,7 +184,7 @@ export default function EditEventPage({ evt }) {
       </div>
 
       <Modal show={showModal} onClose={() => setShowModal(false)}>
-        IMAGE UPLOAD
+        <ImageUpload evtId={evt.id} imageUploaded={imageUploaded} />
       </Modal>
     </Layout>
   );
